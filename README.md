@@ -1,3 +1,6 @@
+### Fork
+Fork from [OpegitStudio/SCW](https://github.com/OpegitStudio/SCW).
+
 # SCW
 Simple DAE2SCW converter and vice versa. Written just for fun in Java.
 
