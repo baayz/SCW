@@ -26,14 +26,6 @@ public class ScwOutputStream extends DataOutputStream {
 		}
 	}
 
-	public void writeFloat16(float v) throws IOException {
-		writeShort((short) (v * 32512));
-	}
-
-	public void writePositiveFloat16(float v) throws IOException {
-		writeShort((short) (v * 0xFFFF));
-	}
-
 	public ScwConfig getConfig() {
 		return config;
 	}

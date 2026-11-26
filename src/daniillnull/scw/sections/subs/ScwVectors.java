@@ -26,7 +26,7 @@ public class ScwVectors implements ScwSerializableEntity {
 
 		data = new float[pointCount * dimension];
 		for (int i = 0; i < data.length; i++) {
-			data[i] = is.readFloat16() * scale;
+			data[i] = is.readShort() / 32512f * scale;
 		}
 
 		// TODO: Remove / remake this. In CR .scw "VERTEX" used instead of "POSITION"
@@ -49,7 +49,7 @@ public class ScwVectors implements ScwSerializableEntity {
 		os.writeInt(pointCount);
 
 		for (float value : data) {
-			os.writeFloat16(value / scale);
+			os.writeShort(Math.round(value * 32512 / scale));
 		}
 	}
 

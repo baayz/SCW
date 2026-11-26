@@ -37,14 +37,6 @@ public class ScwInputStream extends DataInputStream {
 		return (available() > 0);
 	}
 
-	public float readFloat16() throws IOException {
-		return readShort() * 0.000030758f; // Works like N / 32512
-	}
-
-	public float readPositiveFloat16() throws IOException {
-		return readUnsignedShort() / (float) 0xFFFF;
-	}
-
 	public ScwConfig getConfig() {
 		return config;
 	}

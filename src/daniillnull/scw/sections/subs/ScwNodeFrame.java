@@ -21,10 +21,10 @@ public class ScwNodeFrame {
 		id = is.readUnsignedShort();
 
 		if ((flags & 1) != 0) {
-			rotationX = is.readFloat16();
-			rotationY = is.readFloat16();
-			rotationZ = is.readFloat16();
-			rotationW = is.readFloat16();
+			rotationX = is.readShort() / 32512f;
+			rotationY = is.readShort() / 32512f;
+			rotationZ = is.readShort() / 32512f;
+			rotationW = is.readShort() / 32512f;
 		} else {
 			rotationX = base.rotationX;
 			rotationY = base.rotationY;
@@ -45,10 +45,10 @@ public class ScwNodeFrame {
 		os.writeShort(id);
 
 		if ((flags & 1) != 0) {
-			os.writeFloat16(rotationX);
-			os.writeFloat16(rotationY);
-			os.writeFloat16(rotationZ);
-			os.writeFloat16(rotationW);
+			os.writeShort(Math.round(rotationX * 32512));
+			os.writeShort(Math.round(rotationY * 32512));
+			os.writeShort(Math.round(rotationZ * 32512));
+			os.writeShort(Math.round(rotationW * 32512));
 		}
 
 		if ((flags & 2) != 0) os.writeFloat(positionX);

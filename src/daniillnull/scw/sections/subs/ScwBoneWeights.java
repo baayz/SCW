@@ -21,10 +21,10 @@ public class ScwBoneWeights implements ScwSerializableEntity {
 		joints[1] = is.readUnsignedByte();
 		joints[2] = is.readUnsignedByte();
 		joints[3] = is.readUnsignedByte();
-		weights[0] = is.readPositiveFloat16();
-		weights[1] = is.readPositiveFloat16();
-		weights[2] = is.readPositiveFloat16();
-		weights[3] = is.readPositiveFloat16();
+		weights[0] = is.readUnsignedShort() / 65535f;
+		weights[1] = is.readUnsignedShort() / 65535f;
+		weights[2] = is.readUnsignedShort() / 65535f;
+		weights[3] = is.readUnsignedShort() / 65535f;
 	}
 
 	@Override
@@ -33,10 +33,10 @@ public class ScwBoneWeights implements ScwSerializableEntity {
 		os.write(joints[1]);
 		os.write(joints[2]);
 		os.write(joints[3]);
-		os.writePositiveFloat16(weights[0]);
-		os.writePositiveFloat16(weights[1]);
-		os.writePositiveFloat16(weights[2]);
-		os.writePositiveFloat16(weights[3]);
+		os.writeShort(Math.round(weights[0] * 65535));
+		os.writeShort(Math.round(weights[1] * 65535));
+		os.writeShort(Math.round(weights[2] * 65535));
+		os.writeShort(Math.round(weights[3] * 65535));
 	}
 
 	public int getUsedJointCount() {
