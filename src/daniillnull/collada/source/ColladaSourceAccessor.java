@@ -22,6 +22,10 @@ public class ColladaSourceAccessor {
 			new Param("G", "float"),
 			new Param("B", "float"),
 			new Param("A", "float"));
+	public static final List<Param> RGB_FLOAT_PARAMS = List.of(
+			new Param("R", "float"),
+			new Param("G", "float"),
+			new Param("B", "float"));
 	public static final List<Param> JOINT_NAME_PARAMS = List.of(new Param("JOINT", "name"));
 	public static final List<Param> INTERPOLATION_NAME_PARAMS = List.of(new Param("INTERPOLATION", "name"));
 	public static final List<Param> WEIGHT_FLOAT_PARAMS = List.of(new Param("WEIGHT", "float"));

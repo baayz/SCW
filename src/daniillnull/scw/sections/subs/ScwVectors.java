@@ -79,8 +79,12 @@ public class ScwVectors implements ScwSerializableEntity {
 				break;
 
 			case "COLOR":
-				Assert.doAssert(dimension != 4, "Vectors with type COLOR dimension is not 4D!");
-				params = ColladaSourceAccessor.RGBA_FLOAT_PARAMS;
+				Assert.doAssert(dimension != 3 && dimension != 4, "Vectors with type COLOR dimension is not 3D or 4D!");
+				if (dimension == 3) {
+					params = ColladaSourceAccessor.RGB_FLOAT_PARAMS;
+				} else {
+					params = ColladaSourceAccessor.RGBA_FLOAT_PARAMS;
+				}
 				break;
 
 			case "TEXCOORD":
