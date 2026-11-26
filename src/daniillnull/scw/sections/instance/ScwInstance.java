@@ -26,6 +26,9 @@ public abstract class ScwInstance<T extends ColladaInstance> implements ScwSeria
 			case "CAME":
 				return new ScwCameraInstance();
 
+			case "LIGH":
+				return new ScwLightingInstance();
+
 			default:
 				throw new RuntimeException("Unknown ScwInstance type: " + sectionType);
 		}
