@@ -41,7 +41,9 @@ public class ScwMaterial extends ScwSection {
 			specularColor = is.readInt();
 		}
 		unknownS3 = is.readUTF();
-		unknownS4 = is.readUTF();
+		if (is.getConfig().version >= 1) {
+			unknownS4 = is.readUTF();
+		}
 		if (is.readBoolean()) {
 			colorizeTexPath = is.readUTF();
 		} else {
@@ -85,7 +87,9 @@ public class ScwMaterial extends ScwSection {
 			os.writeInt(specularColor);
 		}
 		os.writeUTF(unknownS3);
-		os.writeUTF(unknownS4);
+		if (os.getConfig().version >= 1) {
+			os.writeUTF(unknownS4);
+		}
 		if (colorizeTexPath != null) {
 			os.writeBoolean(true);
 			os.writeUTF(colorizeTexPath);

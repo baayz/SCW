@@ -64,9 +64,19 @@ public class ScwNode implements ScwSerializableEntity {
 			instances.add(instance);
 		}
 
-		int framesCount = is.readShort();
+		int framesCount;
+		if (is.getConfig().version >= 0.25) {
+			framesCount = is.readShort();
+		} else {
+			framesCount = is.readInt();
+		}
 		if (framesCount > 0) {
-			int presentFlags = is.readUnsignedByte();
+			int presentFlags;
+			if (is.getConfig().version >= 0.25) {
+				presentFlags = is.readUnsignedByte();
+			} else {
+				presentFlags = 127;
+			}
 			ScwNodeFrame lastFrame = null;
 			for (int i = 0; i < framesCount; i++) {
 				int currentPresentFlags = (i != 0 ? presentFlags : 127);
@@ -93,11 +103,17 @@ public class ScwNode implements ScwSerializableEntity {
 			instance.save(os);
 		}
 
-		os.writeShort(frames.size());
+		if (os.getConfig().version >= 0.25) {
+			os.writeShort(frames.size());
+		} else {
+			os.writeInt(frames.size());
+		}
 		if (!frames.isEmpty()) {
 			int presentFlags = 127; // TODO: Flags calculation
 			boolean isFirst = true;
-			os.write(presentFlags);
+			if (os.getConfig().version >= 0.25) {
+				os.write(presentFlags);
+			}
 			for (ScwNodeFrame frame : frames) {
 				int currentPresentFlags = presentFlags;
 				if (isFirst) {
