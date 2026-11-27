@@ -62,9 +62,27 @@ public class ConsoleMain {
 
 			runDae2Scw(scale, rotate, translate, mate, geom, anim, came, filename);
 		} else if (args.length >= 2 && args[0].equals("scw2dae")) {
-			String filename = args[1];
-			String animFilename = (args.length >= 3 ? args[2] : null);
-			runScw2Dae(filename, animFilename);
+			String animFilename  = null;
+			Float imposedVersion = null;
+			int i = 1;
+			int end = args.length - 2;
+			while (i < end) {
+				String arg = args[i];
+				switch (arg) {
+					case "-c":
+						animFilename = args[i+1];
+						break;
+					case "-v":
+						imposedVersion = Float.parseFloat(args[i+1]);
+						break;
+					default:
+						printHelp();
+						return;
+				}
+				i += 2;
+			}
+			String filename = args[i];
+			runScw2Dae(filename, animFilename, imposedVersion);
 		} else {
 			printHelp();
 		}
@@ -81,6 +99,8 @@ public class ConsoleMain {
 		System.out.println("  -a : set exported objects (M - materials, G - geometries, A - animations, C - cameras; in one sequence like MGAC)");
 		System.out.println("-> scw2dae <scw file> [anim scw file]:");
 		System.out.println("  Convert input SCW files to collada DAE");
+		System.out.println("  -c : filepath if you want to combine with main file");
+		System.out.println("  -v : impose a version to use(supported versions are 0, 0.25, 0.5, 1, 2)");
 	}
 
 	private static void runDae2Scw(float[] scale, float[] rotate, float[] translate, boolean mate, boolean geom, boolean anim, boolean came, String filename) throws JAXBException, IOException {
@@ -115,16 +135,16 @@ public class ConsoleMain {
 		System.out.println("Dae2Scw: Well done! Saved as " + outFilename);
 	}
 
-	private static void runScw2Dae(String filename, String animFilename) throws IOException, JAXBException {
+	private static void runScw2Dae(String filename, String animFilename, Float imposedVersion) throws IOException, JAXBException {
 		String outFilename = filename.substring(0, filename.lastIndexOf('.')) + ".dae";
 		FileInputStream is = new FileInputStream(filename);
 
-		ScwFile mainFile = new ScwFile();
+		ScwFile mainFile = new ScwFile(imposedVersion);
 		mainFile.load(new ScwInputStream(is));
 
 		if (animFilename != null) {
 			FileInputStream is2 = new FileInputStream(animFilename);
-			ScwFile animFile = new ScwFile();
+			ScwFile animFile = new ScwFile(imposedVersion);
 			animFile.load(new ScwInputStream(is2));
 
 			mainFile.getScene().importFrames(animFile.getScene());
@@ -134,7 +154,7 @@ public class ConsoleMain {
 		if (materialsFilename != null && !materialsFilename.isEmpty()) {
 			try {
 				FileInputStream is3 = new FileInputStream(materialsFilename);
-				ScwFile mateFile = new ScwFile();
+				ScwFile mateFile = new ScwFile(imposedVersion);
 				mateFile.load(new ScwInputStream(is3));
 
 				mainFile.importMaterials(mateFile);

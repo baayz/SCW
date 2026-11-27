@@ -19,7 +19,16 @@ Demo video: https://vk.cc/awEpnK
 Java 9 is required. You can download prebuilt JAR here: https://github.com/daniillnull/scw/releases
 
 #### Converting .scw to .dae
-__`> java -jar SCW.jar scw2dae input_file_geo.scw input_file_walk.scw`__, where __input_file_geo.scw__ is geometry file, and __input_file_walk.scw__ is animation file. Animation file is optional.
+__`> java -jar SCW.jar scw2dae input_file_geo.scw`__
+
+There are some additional parameters that can be specified optionally:
+
+__`> java -jar executable.jar scw2dae -c file_to_combine.scw -v ver input_file.scw`__
+
+`-c` will load another file and combine NODE part with the main file.
+
+`-v` will force the use of one specific version, available versions are 0, 0.25, 0.5, 1 and 2.
+
 #### Converting .dae to .scw
 Simple way:
 

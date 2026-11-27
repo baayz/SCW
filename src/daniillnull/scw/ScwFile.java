@@ -33,13 +33,23 @@ import java.util.*;
 import java.util.zip.CRC32;
 
 public class ScwFile {
+	private Float imposedVersion;
 	private final List<ScwMaterial> materials;
 	private final List<ScwCamera> cameras;
 	private final List<ScwGeometry> geometries;
 	private ScwScene scene;
 	private ScwHeader header;
 
+	float[] supportedVersions = {0f, 0.25f, 0.5f, 1f, 2f};
+
 	public ScwFile() {
+		materials = new ArrayList<>();
+		cameras = new ArrayList<>();
+		geometries = new ArrayList<>();
+	}
+
+	public ScwFile(Float imposedVersion) {
+		this.imposedVersion = imposedVersion;
 		materials = new ArrayList<>();
 		cameras = new ArrayList<>();
 		geometries = new ArrayList<>();
@@ -74,10 +84,14 @@ public class ScwFile {
 					header.load(sectionIs);
 
 					Assert.doAssert(this.header != null, "Try to set header when another one exists!");
-					Assert.doAssert((header.version < 1 || header.version > 2), "Unsupported SC3D version");
+					Assert.doAssert((header.version > 2), "Unsupported SC3D version");
 
 					ScwConfig config = is.getConfig();
-					config.version = header.version;
+					if (imposedVersion != null) {
+						config.version = imposedVersion;
+					} else {
+						config.version = header.version;
+					}
 					config.frameRate = header.frameRate;
 
 					this.header = header;
