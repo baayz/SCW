@@ -63,6 +63,7 @@ public class ConsoleMain {
 			runDae2Scw(scale, rotate, translate, mate, geom, anim, came, filename);
 		} else if (args.length >= 2 && args[0].equals("scw2dae")) {
 			String animFilename  = null;
+			String materialsFilename = null;
 			Float imposedVersion = null;
 			int i = 1;
 			int end = args.length - 2;
@@ -71,6 +72,9 @@ public class ConsoleMain {
 				switch (arg) {
 					case "-c":
 						animFilename = args[i+1];
+						break;
+					case "-m":
+						materialsFilename = args[i+1];
 						break;
 					case "-v":
 						imposedVersion = Float.parseFloat(args[i+1]);
@@ -82,7 +86,7 @@ public class ConsoleMain {
 				i += 2;
 			}
 			String filename = args[i];
-			runScw2Dae(filename, animFilename, imposedVersion);
+			runScw2Dae(filename, animFilename, materialsFilename, imposedVersion);
 		} else {
 			printHelp();
 		}
@@ -100,6 +104,7 @@ public class ConsoleMain {
 		System.out.println("-> scw2dae <scw file> [anim scw file]:");
 		System.out.println("  Convert input SCW files to collada DAE");
 		System.out.println("  -c : filepath if you want to combine with main file");
+		System.out.println("  -m : filepath if you want to for the use of a specific material file with main file");
 		System.out.println("  -v : impose a version to use(supported versions are 0, 0.25, 0.5, 1, 2)");
 	}
 
@@ -135,7 +140,7 @@ public class ConsoleMain {
 		System.out.println("Dae2Scw: Well done! Saved as " + outFilename);
 	}
 
-	private static void runScw2Dae(String filename, String animFilename, Float imposedVersion) throws IOException, JAXBException {
+	private static void runScw2Dae(String filename, String animFilename, String materialsFilename, Float imposedVersion) throws IOException, JAXBException {
 		String outFilename = filename.substring(0, filename.lastIndexOf('.')) + ".dae";
 		FileInputStream is = new FileInputStream(filename);
 
@@ -143,6 +148,7 @@ public class ConsoleMain {
 		mainFile.load(new ScwInputStream(is));
 
 		if (animFilename != null) {
+			outFilename = animFilename.substring(0, animFilename.lastIndexOf('.')) + ".dae";
 			FileInputStream is2 = new FileInputStream(animFilename);
 			ScwFile animFile = new ScwFile(imposedVersion);
 			animFile.load(new ScwInputStream(is2));
@@ -150,7 +156,9 @@ public class ConsoleMain {
 			mainFile.getScene().importFrames(animFile.getScene());
 		}
 
-		String materialsFilename = mainFile.getHeader().materialsFilename;
+		if (materialsFilename == null) {
+			materialsFilename = mainFile.getHeader().materialsFilename;
+		}
 		if (materialsFilename != null && !materialsFilename.isEmpty()) {
 			try {
 				FileInputStream is3 = new FileInputStream(materialsFilename);
