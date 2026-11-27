@@ -40,8 +40,6 @@ public class ScwFile {
 	private ScwScene scene;
 	private ScwHeader header;
 
-	float[] supportedVersions = {0f, 0.25f, 0.5f, 1f, 2f};
-
 	public ScwFile() {
 		materials = new ArrayList<>();
 		cameras = new ArrayList<>();
