@@ -23,13 +23,15 @@ __`> java -jar SCW.jar scw2dae input_file_geo.scw`__
 
 There are some additional parameters that can be specified optionally:
 
-__`> java -jar executable.jar scw2dae -c file_to_combine.scw -m file_materials.scw -v ver input_file.scw`__
+__`> java -jar executable.jar scw2dae -c file_to_combine.scw -m file_materials.scw -v ver -o output_file.scw input_file.scw`__
 
 `-c` will load another file and combine NODE part with the main file.
 
 `-m` will load another file and add MATE parts to the main file.
 
 `-v` will force the use of one specific version, available versions are 0, 0.25, 0.5, 1 and 2.
+
+`-o` will save the file in the desired path.
 
 #### Converting .dae to .scw
 Simple way:
@@ -38,11 +40,13 @@ __`> java -jar SCW.jar dae2scw input_file.dae`__
 
 There are some additional parameters that can be specified optionally:
 
-__`> java -jar SCW.jar dae2scw -s X;Y;Z -r X;Y;Z -t X;Y;Z -a MGAC input_file.dae`__
+__`> java -jar SCW.jar dae2scw -s X;Y;Z -r X;Y;Z -t X;Y;Z -a MGAC -o output_file.scw input_file.dae`__
 
 `-s`  `-r` `-t` will set transformations for root nodes. They are scale, rotate and translate respectively.
 
 `-a` will set what to export. It can be **M**aterial, **G**eometry, **A**nimation and **C**amera.
+
+`-o` will save the file in the desired path.
 
 ### Credits
 LibGDX: https://github.com/libgdx/libgdx - Used some classes for working with matrices
