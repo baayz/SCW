@@ -18,7 +18,7 @@ public class ScwHeader extends ScwSection {
 		unknown2 = is.readShort();
 		animationFrameEnd = is.readShort();
 		materialsFilename = is.readUTF();
-		if (is.getConfig().version > 1) {
+		if (hasAvailable) {
 			unknownB = is.readBoolean();
 		}
 	}
