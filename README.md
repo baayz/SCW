@@ -16,7 +16,7 @@ Demo video: https://vk.cc/awEpnK
 5. Maybe some other bugs, you can report them or search for a solution in [Issues](https://github.com/baayz/SCW/issues)
 
 ### How to use it?
-Java 9 is required. You can download prebuilt JAR here: https://github.com/daniillnull/scw/releases
+Java 9 is required. You can download prebuilt JAR in [Realeases](https://github.com/baayz/SCW/releases)
 
 #### Converting .scw to .dae
 Simple way:
