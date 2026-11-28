@@ -14,13 +14,23 @@ public class ScwCameraInstance extends ScwInstance<ColladaCameraInstance> {
 	@Override
 	public void load(ScwInputStream is) throws IOException {
 		cameraId = is.readUTF();
-		targetNodeId = is.readUTF();
+		if (is.getConfig().version < 1) {
+			if (cameraId.endsWith(Suffix.CAMERA)) {
+				targetNodeId = Suffix.remove(cameraId, Suffix.CAMERA) + ".Target";
+			} else {
+				targetNodeId = cameraId + ".Target";
+			}
+		} else {
+			targetNodeId = is.readUTF();
+		}
 	}
 
 	@Override
 	public void save(ScwOutputStream os) throws IOException {
 		os.writeUTF(cameraId);
-		os.writeUTF(targetNodeId);
+		if (os.getConfig().version < 1) {
+			os.writeUTF(targetNodeId);
+		}
 	}
 
 	@Override
