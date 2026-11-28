@@ -18,7 +18,7 @@ public class ScwHeader extends ScwSection {
 		unknown2 = is.readShort();
 		animationFrameEnd = is.readShort();
 		materialsFilename = is.readUTF();
-		if (is.hasAvailable()) {
+		if (is.getConfig().version > 1) {
 			unknownB = is.readBoolean();
 		}
 	}
@@ -30,7 +30,9 @@ public class ScwHeader extends ScwSection {
 		os.writeShort(unknown2);
 		os.writeShort(animationFrameEnd);
 		os.writeUTF(materialsFilename);
-		os.writeBoolean(unknownB);
+		if (os.getConfig().version > 1) {
+			os.writeBoolean(unknownB);
+		}
 	}
 
 	@Override

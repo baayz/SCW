@@ -147,7 +147,11 @@ public class ScwFile {
 		CRC32 crc32calc = new CRC32();
 		List<ScwSection> sections = getAllSections();
 
-		config.version = header.version;
+		if (imposedVersion != null) {
+			config.version = imposedVersion;
+		} else {
+			config.version = header.version;
+		}
 		config.frameRate = header.frameRate;
 
 		os.writeSectionName("SC3D");

@@ -56,7 +56,7 @@ public class ScwGeometry extends ScwSection {
 		name = is.readUTF();
 		groupName = is.readUTF(); // IDK what is it
 
-		if (is.getConfig().version <= 1) {
+		if (is.getConfig().version < 2) {
 			is.skipBytes(16 * 4); // Unknown matrix for old versions
 		}
 
@@ -105,7 +105,7 @@ public class ScwGeometry extends ScwSection {
 		os.writeUTF(name);
 		os.writeUTF(groupName);
 
-		if (os.getConfig().version <= 1) {
+		if (os.getConfig().version < 2) {
 			float[] unknownMatrix = {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1}; // Set it to identity matrix
 			for (int i = 0; i < 16; i++) {
 				os.writeFloat(unknownMatrix[i]);

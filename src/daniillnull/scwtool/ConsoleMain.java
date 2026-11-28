@@ -26,6 +26,7 @@ public class ConsoleMain {
 		if (args.length >= 2 && args[0].equals("dae2scw")) {
 			float[] scale = null, rotate = null, translate = null;
 			boolean mate = true, geom = true, anim = true, came = false;
+			Float imposedVersion = null;
 			String filename;
 			String outFilename = null;
 
@@ -53,6 +54,9 @@ public class ConsoleMain {
 						anim = (value.indexOf('A') != -1);
 						came = (value.indexOf('C') != -1);
 						break;
+					case "-v":
+						imposedVersion = Float.parseFloat(args[i+1]);
+						break;
 					case "-o":
 						outFilename = args[i+1];
 						break;
@@ -64,7 +68,7 @@ public class ConsoleMain {
 			}
 			filename = args[i];
 
-			runDae2Scw(scale, rotate, translate, mate, geom, anim, came, filename, outFilename);
+			runDae2Scw(scale, rotate, translate, mate, geom, anim, came, filename, imposedVersion, outFilename);
 		} else if (args.length >= 2 && args[0].equals("scw2dae")) {
 			String animFilename  = null;
 			String materialsFilename = null;
@@ -104,22 +108,33 @@ public class ConsoleMain {
 	private static void printHelp() {
 		System.out.println("Usage: executable.jar <command> <command arguments...>");
 		System.out.println("Available commands:");
-		System.out.println("-> dae2scw [-s X;Y;Z][-r X;Y;Z][-t X;T;Z][-a MGAC][-o output path] <dae file>");
+		System.out.println("-> dae2scw [-s X;Y;Z][-r X;Y;Z][-t X;T;Z][-a MGAC][-v version][-o output path] <dae file>");
 		System.out.println("  Convert input collada DAE files to SCW");
 		System.out.println("  -s : set scaling for root nodes");
 		System.out.println("  -r : set rotation for root nodes");
 		System.out.println("  -t : set translation for root nodes");
 		System.out.println("  -a : set exported objects (M - materials, G - geometries, A - animations, C - cameras; in one sequence like MGAC)");
+		System.out.println("  -v : impose a version for export (default is 2) (supported versions are 0, 0.25, 0.5, 1, 1.25, 2)");
 		System.out.println("  -o : filepath of output file");
 		System.out.println("-> scw2dae [-c scw file][-m scw file][-v version][-o output path] <scw file>:");
 		System.out.println("  Convert input SCW files to collada DAE");
 		System.out.println("  -c : filepath if you want to combine with main file");
 		System.out.println("  -m : filepath if you want to for the use of a specific material file with main file");
-		System.out.println("  -v : impose a version to use(supported versions are 0, 0.25, 0.5, 1, 2)");
+		System.out.println("  -v : impose a version to use (supported versions are 0, 0.25, 0.5, 1, 1.25, 2)");
 		System.out.println("  -o : filepath of output file");
 	}
 
-	private static void runDae2Scw(float[] scale, float[] rotate, float[] translate, boolean mate, boolean geom, boolean anim, boolean came, String filename, String outFilename) throws JAXBException, IOException {
+	private static void runDae2Scw(float[] scale, float[] rotate, float[] translate, boolean mate, boolean geom, boolean anim, boolean came, String filename, Float imposedVersion, String outFilename) throws JAXBException, IOException {
+		if (imposedVersion != null) {
+			if (!imposedVersion.equals(0f) && !imposedVersion.equals(0.25f)
+					&& !imposedVersion.equals(0.5f) && !imposedVersion.equals(1f)
+					&& !imposedVersion.equals(1.25f) && !imposedVersion.equals(2f)) {
+				System.out.println("Incorrect version, run without any command for more information");
+				printHelp();
+				return;
+			}
+		}
+
 		if (outFilename == null) {
 			outFilename = filename.substring(0, filename.lastIndexOf('.')) + ".scw";
 		}
@@ -128,11 +143,15 @@ public class ConsoleMain {
 		Unmarshaller unmarshaller = context.createUnmarshaller();
 		Collada collada = (Collada) unmarshaller.unmarshal(new FileReader(filename));
 
-		ScwFile mainFile = new ScwFile();
+		ScwFile mainFile = new ScwFile(imposedVersion);
 		mainFile.importCollada(collada, mate, geom, anim, came);
 		ScwHeader scwHeader = new ScwHeader();
 		// TODO: More parameters
-		scwHeader.version = 2;
+		if (imposedVersion != null) {
+			scwHeader.version = imposedVersion.intValue();
+		} else {
+			scwHeader.version = 2;
+		}
 		scwHeader.frameRate = 30;
 		scwHeader.materialsFilename = "";
 		mainFile.setHeader(scwHeader);
@@ -154,6 +173,16 @@ public class ConsoleMain {
 	}
 
 	private static void runScw2Dae(String filename, String animFilename, String materialsFilename, Float imposedVersion, String outFilename) throws IOException, JAXBException {
+		if (imposedVersion != null) {
+			if (!imposedVersion.equals(0f) && !imposedVersion.equals(0.25f)
+					&& !imposedVersion.equals(0.5f) && !imposedVersion.equals(1f)
+					&& !imposedVersion.equals(1.25f) && !imposedVersion.equals(2f)) {
+				System.out.println("Incorrect version, run without any command for more information");
+				printHelp();
+				return;
+			}
+		}
+
 		if (outFilename == null) {
 			if (animFilename != null) {
 				outFilename = animFilename.substring(0, animFilename.lastIndexOf('.')) + ".dae";

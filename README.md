@@ -29,7 +29,7 @@ __`> java -jar executable.jar scw2dae -c file_to_combine.scw -m file_materials.s
 
 `-m` will load another file and add MATE parts to the main file.
 
-`-v` will force the use of one specific version, available versions are 0, 0.25, 0.5, 1 and 2.
+`-v` will force the use of a specific scw version for decoding, available versions are 0, 0.25, 0.5, 1, 1.25 and 2.
 
 `-o` will save the file in the desired path.
 
@@ -40,11 +40,13 @@ __`> java -jar SCW.jar dae2scw input_file.dae`__
 
 There are some additional parameters that can be specified optionally:
 
-__`> java -jar SCW.jar dae2scw -s X;Y;Z -r X;Y;Z -t X;Y;Z -a MGAC -o output_file.scw input_file.dae`__
+__`> java -jar SCW.jar dae2scw -s X;Y;Z -r X;Y;Z -t X;Y;Z -a MGAC -v ver -o output_file.scw input_file.dae`__
 
 `-s`  `-r` `-t` will set transformations for root nodes. They are scale, rotate and translate respectively.
 
 `-a` will set what to export. It can be **M**aterial, **G**eometry, **A**nimation and **C**amera.
+
+`-v` will force the use of a specific scw version for encoding, available versions are 0, 0.25, 0.5, 1, 1.25 and 2 (default is 2).
 
 `-o` will save the file in the desired path.
 
