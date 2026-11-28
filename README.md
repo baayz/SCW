@@ -13,12 +13,14 @@ Demo video: https://vk.cc/awEpnK
 2. It doesn't support collada completely, but works with models expored from blender
 3. Materials aren't fully supported
 4. It doesn't accept transformations of root armature from blender, so you should specify them directly
-5. Maybe some other bugs, you can report them or search for a solution in [Issues](https://github.com/OpegitStudio/SCW/issues)
+5. Maybe some other bugs, you can report them or search for a solution in [Issues](https://github.com/baayz/SCW/issues)
 
 ### How to use it?
 Java 9 is required. You can download prebuilt JAR here: https://github.com/daniillnull/scw/releases
 
 #### Converting .scw to .dae
+Simple way:
+
 __`> java -jar SCW.jar scw2dae input_file_geo.scw`__
 
 There are some additional parameters that can be specified optionally:
